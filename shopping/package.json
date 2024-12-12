@@ -1,0 +1,32 @@
+{
+  "name": "shopping",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "nodemon",
+    "build": "next build",
+    "start": "node server/index.js",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.10.0",
+    "@emotion/styled": "^11.10.0",
+    "@mui/icons-material": "^6.1.7",
+    "@mui/material": "^5.16.7",
+    "@paystack/inline-js": "^2.22.1",
+    "express": "^4.21.1",
+    "firebase": "^11.0.1",
+    "firebase-admin": "^13.0.0",
+    "mongoose": "^8.8.1",
+    "next": "15.0.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "uuid": "^11.0.3"
+  },
+  "type": "module",
+  "devDependencies": {
+    "dotenv": "^16.4.5",
+    "nodemon": "^3.1.7",
+    "server-only": "^0.0.1"
+  }
+}
