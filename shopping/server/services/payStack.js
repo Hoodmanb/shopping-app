@@ -4,14 +4,17 @@ import {
 import https from 'https'
 
 import mongoClient from '../config/mongodb.js'
-// import subscriptionService from '../model/subscribe.js'
+import subscriptionService from '../model/subscribe.js'
+
+// await mongoClient.connect();
+
 import user from '../model/user.js'
 
-const subscribeHandler = subscriptionService;
-const userHandler = user
-// const referenceHandler = reference
-
 await mongoClient.connect();
+
+const subscribeHandler = subscriptionService;
+// const userHandler = user
+// const referenceHandler = reference
 
 class Paystack {
   constructor() {}
@@ -29,7 +32,7 @@ class Paystack {
       const response = await createCustomerFunction(options, params);
       if(response.status === true){
         const customerId = response.customer_code
-        await userHandler.addUser(userId, customerId)
+        await user.addUser(userId, customerId)
         return {
           code: 200,
           info: 'user created successfully',

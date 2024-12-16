@@ -35,7 +35,7 @@ export const verifyTransaction = async (req, res) => {
   }
 }
 
-export const paystackWebhook = async (req, res){
+export const paystackWebhook = async (req, res) => {
   // web hook for paystack events triggers
   const hash = crypto.createHmac('sha512', secret).update(JSON.stringify(req.body)).digest('hex');
     if (hash == req.headers['x-paystack-signature']) {

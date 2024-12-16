@@ -32,7 +32,7 @@ export const makeAdmin = async (req, res) => {
   } catch(error) {}
 }
 
-export const suspendUser = async (req, res) {
+export const suspendUser = async (req, res) => {
   // this function expects the request body to contain the userId, it suspend the user with the passed id
   const uid = req.body.id
   const userId = req.userId
@@ -57,7 +57,7 @@ export const suspendUser = async (req, res) {
   }
 }
 
-export const unsuspend = async (req, res) {
+export const unsuspend = async (req, res) => {
   // this function unsuspend the user with the userId passed to the request body
   const uid = req.body.id
   const userId = req.userId

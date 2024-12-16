@@ -2,6 +2,7 @@
 import firebaseAdmin from "../config/firebase-admin.js"
 import isAdmin from "../admin/adminCheck.js"
 import product from "../model/products.js"
+import mongoClient from "../config/mongodb.js"
 
 const productHandler = product
 await mongoClient.connect()

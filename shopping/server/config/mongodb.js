@@ -1,3 +1,6 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 // mongoose configuration
 import mongoose from 'mongoose';
 mongoose.set('strictQuery', false);

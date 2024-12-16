@@ -3,7 +3,7 @@ import user from '../model/user.js'
 
 await mongoClient.connect()
 
-const isPaystackCustomer = (req, res, next) => {
+const isPaystackCustomer = async (req, res, next) => {
   // 
   const {email, userId} = req
   try{
@@ -12,11 +12,11 @@ const isPaystackCustomer = (req, res, next) => {
       req.customerId = addUser.newUser.paystackCustomerId
       next()
     } else{
-      res.status(500).json(message:'error', info:'unable to set paystack customer')
+      res.status(500).json({message:'error', info:'unable to set paystack customer'})
     }
   }catch(error){
     res.status(500).json(error)
   }
 }
 
-default export isPaystackCustomer
+export default isPaystackCustomer

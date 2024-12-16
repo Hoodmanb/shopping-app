@@ -19,31 +19,32 @@ import paystackRouter from './routes/paystack.js'
 // controller
 import {getProduct, getProducts} from "./controller/products.js"
 
-//environment configuration
+// environment configuration
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
+const port = process.env.PORT || 3000
 
 app.prepare().then(() => {
   const server = express()
   
-  server.use(express.json())
+  // server.use(express.json())
   
-  server.get("/api/products", getProducts)
+  // server.get("/api/products", getProducts)
   
-  server.get("/api/product/:id", getProduct)
+  // server.get("/api/product/:id", getProduct)
   
-  server.use("/api", verifyToken, isSuspended, isPaystackCustomer)
+  // server.use("/api", verifyToken, isSuspended, isPaystackCustomer)
   
-  server.use(paystackRouter)
+  // server.use(paystackRouter)
 
-  server.use(productRouter)
+  // server.use(productRouter)
   
-  server.use(chartRouter)
+  // server.use(chartRouter)
   
-  server.use("/api/admin", isAdmin)
+  // server.use("/api/admin", isAdmin)
   
-  server.use(previlagedroutes)
+  // server.use(previlagedroutes)
 
   // Handling all other requests with Next.js' built-in handler
   server.all('*', (req, res) => {
@@ -52,8 +53,8 @@ app.prepare().then(() => {
   });
 
   // Start the server
-  server.listen(3000, (err) => {
+  server.listen(port, (err) => {
     if (err) throw err;
-    console.log('> Ready on http://localhost:3000');
+    console.log(`> Ready on http://localhost:${port}`);
   });
 });

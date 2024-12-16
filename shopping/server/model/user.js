@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 import paystack from '../services/payStack.js'
 
-const payStackHandler = payStack
+const payStackHandler = paystack
 // Define the User schema
 const userSchema = new mongoose.Schema({
   firebaseUserId: { type: String, required: true },

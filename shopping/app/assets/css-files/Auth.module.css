@@ -1,0 +1,29 @@
+.sign{
+  font-size: large;
+  font-weight: bold;
+  width: 50%;
+  height: 100%;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.signin{
+}
+
+.signup{
+  background-color: white;
+  border-top-left-radius: 1.4em;
+  color: black;
+}
+
+.sign:focus {
+
+}
+
+.sign:active {
+}
+
+.span{
+  outline: none;
+}

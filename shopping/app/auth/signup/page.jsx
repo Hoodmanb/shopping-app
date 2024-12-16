@@ -2,34 +2,29 @@
 
 import React, { useState } from 'react';
 
-//hooks
-import useUserAuth from "../../hooks/userAuth.js"
-
-//components
-// import CreateUser from "./components/signup.js"
+// hooks
+import useUserAuth from "@/app/hooks/userAuth.js"
 
 // mui
-import { FormControl, Input, InputLabel, FormHelperText, Button, IconButton, InputAdornment } from '@mui/material';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { FormControlLabel, Button, IconButton, InputAdornment, Box, Checkbox, Typography, TextField, Link } from '@mui/material';
+import { Visibility, VisibilityOff, NavigateBefore } from '@mui/icons-material';
 
-export default function SignUpForm() {
+export default function SignUp() {
   const [email, setEmail] = useState('');
-  const [displayName, setdisplayName] = useState("")
+  const [displayName, setDisplayName] = useState("");
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [response, setResponse] = useState("")
-  
-    // Destructure functions correctly from userAuth
+  const [response, setResponse] = useState("");
+  const [checked, setChecked] = useState(false);
+
+  // Destructure functions correctly from userAuth
   const { signup } = useUserAuth();
-  // const [emailError, setEmailError] = useState('');
-  // const [passwordError, setPasswordError] = useState('');
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const userData = {email, password, displayName}
-    // setResponse(await CreateUser(userData, signup))
-    const res = await signup(email, password)
-    setResponse(res.message)
+    const userData = { email, password, displayName };
+    const res = await signup(email, password);
+    setResponse(res.message);
   };
 
   const handleClickShowPassword = () => {
@@ -37,53 +32,118 @@ export default function SignUpForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <FormControl required sx={{ marginBottom: 2 }}>
-        <InputLabel htmlFor="displayName">DisplayName</InputLabel>
-        <Input
-          id="displayName"
-          name="displayName"
-          type="text"
-          value={displayName}
-          onChange={(e) => setdisplayName(e.target.value)}
-          aria-describedby="email-helper-text"
-        />
-      </FormControl>
-      
-      <FormControl required sx={{ marginBottom: 2 }}>
-        <InputLabel htmlFor="email">Email</InputLabel>
-        <Input
-          id="email"
-          name="email"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          aria-describedby="email-helper-text"
-        />
-      </FormControl>
+    <Box sx={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'start',
+      minHeight: '100vh', // To ensure it takes full height of the screen
+      backgroundColor:'#2C2C2C'
+    }}>
+      <Button 
+      startIcon={<NavigateBefore />}
+      sx={{float:'left'}}>
+        Back
+      </Button>
+      <Box sx={{
+        backgroundColor:'black',
+        width:'100%',
+        
+      }}>
+      <form onSubmit={handleSubmit} style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '100%', // Ensure the form takes up full width
+        maxWidth: '400px', // Optional: limit the form width
+        // backgroundColor:'black'
+      }}>
+        <Typography variant='h4'>Get Started</Typography>
 
-      <FormControl required sx={{ marginBottom: 2 }}>
-        <InputLabel htmlFor="password">Password</InputLabel>
-        <Input
+        <TextField
+          required
+          id="displayName"
+          label="Display Name"
+          variant="outlined"
+          size="small"
+          value={displayName}
+          type="text"
+          onChange={(e) => setDisplayName(e.target.value)}
+          fullWidth // Ensures full width
+        />
+
+        <TextField
+          required
+          id="email"
+          label="Email"
+          variant="outlined"
+          size="small"
+          value={email}
+          type="email"
+          onChange={(e) => setEmail(e.target.value)}
+          fullWidth // Ensures full width
+        />
+
+        <TextField
+          required
           id="password"
-          name="password"
-          type={showPassword ? 'text' : 'password'}
+          label="Password"
+          variant="outlined"
+          size="small"
           value={password}
+          type={showPassword ? 'text' : 'password'}
           onChange={(e) => setPassword(e.target.value)}
-          aria-describedby="password-helper-text"
-          endAdornment={
-            <InputAdornment position="end">
-              <IconButton onClick={handleClickShowPassword} edge="end">
-                {showPassword ? <VisibilityOff /> : <Visibility />}
-              </IconButton>
-            </InputAdornment>
+          fullWidth // Ensures full width
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton onClick={handleClickShowPassword} edge="end">
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+        />
+
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={checked}
+              onChange={() => setChecked(prev => !prev)}
+              inputProps={{ 'aria-label': 'controlled' }}
+            />
+          }
+          label={
+            <>
+              By signing up, you agree with our{' '}
+              <Link href="#">Terms and Conditions</Link>
+            </>
           }
         />
-      </FormControl>
-      <Button type="submit" variant="contained" color="primary" sx={{ marginTop: 2 }}>
-        Submit
-      </Button>
-      {response && <h6>{response}</h6>}
-    </form>
+
+        <Button type="submit" variant="contained" color="primary" sx={{ marginTop: 2 }}>
+          Sign Up
+        </Button>
+
+        {response && <h6>{response}</h6>}
+      </form>
+      <div>
+        <hr />
+        <h5>Sign Up With</h5>
+        <hr />
+      </div>
+      <Box>
+        {/* Add relevant social media buttons */}
+        <IconButton>
+          {/* Example for Google sign up */}
+          {/* <GoogleIcon /> */}
+        </IconButton>
+        <IconButton>
+          {/* Add any other relevant icon */}
+        </IconButton>
+      </Box>
+      <Typography>Already Have An Account? <Link href="/auth/login">Sign In</Link></Typography>
+      </Box>
+    </Box>
   );
 }

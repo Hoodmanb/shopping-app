@@ -25,7 +25,7 @@ export default function useUserAuth() {
       console.log('frontend token:', returnedToken)
       const stored = await storeIdToken(returnedToken.token)
       
-      return {token, stored, message: token}
+      return {token, message: 'sucessful'}
       
     } catch (err) {
       return {message: handleSignupError(err.code)}

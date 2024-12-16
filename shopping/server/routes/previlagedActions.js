@@ -1,8 +1,8 @@
 import express from "express"
-import deleteUser from "../controller/previlagedActions.js"
+import { deleteUser } from "../controller/previlagedActions.js"
 import { makeAdmin, suspendUser, unsuspend} from "../admin/adminOperations.js"
 
-const previlagedroutes = express.Router
+const previlagedroutes = express.Router()
 
 previlagedroutes.delete("/api/user/delete", deleteUser);
 
