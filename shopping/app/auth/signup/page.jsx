@@ -8,6 +8,9 @@ import useUserAuth from "@/app/hooks/userAuth.js"
 // mui
 import { FormControlLabel, Button, IconButton, InputAdornment, Box, Checkbox, Typography, TextField, Link } from '@mui/material';
 import { Visibility, VisibilityOff, NavigateBefore } from '@mui/icons-material';
+import GoogleIcon from '@mui/icons-material/Google';
+import AppleIcon from '@mui/icons-material/Apple';
+import {useTheme} from "@mui/material/styles"
 
 export default function SignUp() {
   const [email, setEmail] = useState('');
@@ -19,6 +22,8 @@ export default function SignUp() {
 
   // Destructure functions correctly from userAuth
   const { signup } = useUserAuth();
+  
+  const theme = useTheme();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -30,23 +35,48 @@ export default function SignUp() {
   const handleClickShowPassword = () => {
     setShowPassword((prev) => !prev);
   };
+  
+  const inputStyle = {
+    margin:"20px",
+    "& .MuiOutlinedInput-root": {
+      "& fieldset": {
+        // borderColor: "white", // Border color
+        borderRadius:'20px',
+        height:'3.5em',
+      }
+    }
+  }
+  
+  const iconStyles = {
+    color:'text.primary',
+    border:`1px solid ${theme.customColors.primary}`,
+    borderRadius:'50%',
+    margin:'10px'
+  }
 
   return (
     <Box sx={{
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'start',
-      minHeight: '100vh', // To ensure it takes full height of the screen
+      // minHeight: '100vh',
+      // height:'100vh',
       backgroundColor:'#2C2C2C'
     }}>
       <Button 
       startIcon={<NavigateBefore />}
-      sx={{float:'left'}}>
+      sx={{marginBottom:'30px', marginTop:'10px'}}>
         Back
       </Button>
       <Box sx={{
-        backgroundColor:'black',
+        backgroundColor:'background.default',
         width:'100%',
+        borderTopLeftRadius:'20px',
+        borderTopRightRadius:'20px',
+        paddingTop:'15px',
+        paddingBottom:'10px',
+        paddingRight:'10px',
+        paddingLeft:'10px'
         
       }}>
       <form onSubmit={handleSubmit} style={{
@@ -55,10 +85,12 @@ export default function SignUp() {
         alignItems: 'center',
         justifyContent: 'center',
         width: '100%', // Ensure the form takes up full width
-        maxWidth: '400px', // Optional: limit the form width
-        // backgroundColor:'black'
+        maxWidth: '400px',
+        margin:'auto',
+        marginBottom:'20px'
       }}>
-        <Typography variant='h4'>Get Started</Typography>
+        <Typography variant='h4'
+        sx={{marginBottom:'20px'}}>Get Started</Typography>
 
         <TextField
           required
@@ -70,6 +102,7 @@ export default function SignUp() {
           type="text"
           onChange={(e) => setDisplayName(e.target.value)}
           fullWidth // Ensures full width
+          sx={inputStyle}
         />
 
         <TextField
@@ -82,6 +115,7 @@ export default function SignUp() {
           type="email"
           onChange={(e) => setEmail(e.target.value)}
           fullWidth // Ensures full width
+          sx={inputStyle}
         />
 
         <TextField
@@ -94,6 +128,7 @@ export default function SignUp() {
           type={showPassword ? 'text' : 'password'}
           onChange={(e) => setPassword(e.target.value)}
           fullWidth // Ensures full width
+          sx={inputStyle}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -106,43 +141,87 @@ export default function SignUp() {
         />
 
         <FormControlLabel
+        sx={{margin:'auto'}}
           control={
             <Checkbox
               checked={checked}
               onChange={() => setChecked(prev => !prev)}
               inputProps={{ 'aria-label': 'controlled' }}
+              sx={{
+                padding:'0',
+                marginRight:'5px'
+              }}
+              size="large"
             />
           }
           label={
             <>
               By signing up, you agree with our{' '}
-              <Link href="#">Terms and Conditions</Link>
+              <Link sx={{color:'blue'}} href="#">Terms and Conditions</Link>
             </>
           }
         />
 
-        <Button type="submit" variant="contained" color="primary" sx={{ marginTop: 2 }}>
+        <Button type="submit" variant="contained" sx={{ 
+            marginTop: '20px',
+            marginBottom:'5px',
+            backgroundColor:theme.customColors.primary,
+            color:theme.customColors.secondary,
+            borderRadius:'20px',
+            height:'3.5em'
+          }}
+          fullWidth>
           Sign Up
         </Button>
 
-        {response && <h6>{response}</h6>}
+        {response && <Typography color='red'>{response}</Typography>}
       </form>
-      <div>
-        <hr />
-        <h5>Sign Up With</h5>
-        <hr />
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '10px',
+        }}
+      >
+        <hr
+          style={{
+            flex: 1,
+            border: 'none',
+            borderTop: '2px solid #ccc',
+          }}
+        />
+        <h5
+          style={{
+            margin: 0,
+            whiteSpace: 'nowrap',
+          }}
+        >
+          Sign Up With
+        </h5>
+        <hr
+          style={{
+            flex: 1,
+            border: 'none',
+            borderTop: '2px solid #ccc',
+          }}
+        />
       </div>
-      <Box>
-        {/* Add relevant social media buttons */}
-        <IconButton>
-          {/* Example for Google sign up */}
-          {/* <GoogleIcon /> */}
+      <Box sx={{
+        display:'flex',
+        justifyContent:'center',
+        alignItems:'center'
+      }}>
+        <IconButton 
+        sx={iconStyles}>
+          <GoogleIcon/>
         </IconButton>
-        <IconButton>
-          {/* Add any other relevant icon */}
+        <IconButton 
+        sx={iconStyles}>
+          <AppleIcon/>
         </IconButton>
       </Box>
-      <Typography>Already Have An Account? <Link href="/auth/login">Sign In</Link></Typography>
+      <Typography sx={{textAlign:'center', marginTop:'20px'}}>Already Have An Account? <Link sx={{color:'blue'}} href="/auth/login">Sign In</Link></Typography>
       </Box>
     </Box>
   );

@@ -1,5 +1,3 @@
-import dotenv from 'dotenv';
-dotenv.config();
 import https from 'https';
 
 const SECRET_KEY = process.env.SECRET_KEY || 'sk_test_c78431620094f6a005a49fc19aa596f563f5d70a'
