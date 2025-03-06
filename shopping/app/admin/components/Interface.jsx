@@ -3,7 +3,7 @@ import Dashboard from './Dashboard';
 import Products from './Products';
 import AddProduct from './products/addProduct/AddProduct.jsx';
 import ModifyProducts from "./ModifyProducts";
-import Payments from './Payments';
+import Transactions from './Transactions';
 import Notification from './Notification';
 import Feedback from './Feedback';
 import Review from './Review';
@@ -24,20 +24,16 @@ export default function Interface({ pathname }) {
         return <AddProduct />;
       case '/modify-products':
         return <ModifyProducts />;
-      case '/successful':
-        return <Payments type="successful" />;
-      case '/refund':
-        return <Payments type="refund" />;
-      case '/pending':
-        return <Payments type="pending" />;
+      case '/orders':
+        return <Transactions/>;
       case '/notification':
         return <Notification />;
       case '/feedback':
         return <Feedback />;
       case '/review':
         return <Review />;
-      case '/subscription':
-        return <Subscription />;
+      // case '/subscription':
+      //   return <Subscription />;
       default:
         return <NotFound code={path}/>;
     }

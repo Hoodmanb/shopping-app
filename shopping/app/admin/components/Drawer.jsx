@@ -61,22 +61,12 @@ const NAVIGATION = [
   },
   {
     kind: 'header',
-    title: 'Transaction',
+    title: 'Transactions',
   },
   {
-    segment: 'successful',
-    title: 'Successful',
+    segment: 'orders',
+    title: 'Orders',
     icon: <DoneAllIcon />,
-  },
-  {
-    segment: 'refund',
-    title: 'Refund',
-    icon: <KeyboardReturnIcon />,
-  },
-  {
-    segment: 'pending',
-    title: 'Pending',
-    icon: <PendingIcon />,
   },
   {
     kind: 'divider',
@@ -96,11 +86,6 @@ const NAVIGATION = [
     icon: <FeedbackIcon />,
   },
   {
-    segment: 'subscription',
-    title: 'Subscription',
-    icon: <SubscriptionsIcon />,
-  },
-  {
     segment: 'review',
     title: 'Review',
     icon: <ReviewsIcon />,
@@ -116,6 +101,8 @@ function DemoPageContent({ pathname }) {
         flexDirection: 'column',
         alignItems: 'center',
         textAlign: 'center',
+        overflow:'hidden',
+        padding:'20px'
       }}
     >
       <Interface pathname={pathname} />

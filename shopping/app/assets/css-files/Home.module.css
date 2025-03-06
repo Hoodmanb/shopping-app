@@ -1,0 +1,53 @@
+.labels, .categories{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  flex-direction: row;
+}
+
+.categories{
+  margin-top: 5px;
+  width: 100%;
+  text-align: center;
+}
+
+.categoriesname{
+  font-size: 0.35em;
+  text-align: center;
+  font-weight: 200;
+}
+
+.categoriesitem{
+  max-width: 20%;
+  margin: 0 5px;
+  text-align: center;
+}
+
+.productdetails{
+  display: flex;
+  justify-content: space-between;
+  /* align-items: center; */
+  font-size: 0.65em;
+  margin:0 5px;
+  margin-bottom:5px;
+  background-color: transparent;
+}
+
+.productimage{
+  background-color: grey;
+  border-radius: 10px;
+  padding: 0;
+  max-height: 6em;
+  min-height: 6em;
+}
+
+.productdiscount{
+  width:25%;
+  height: 18%;
+  right: 0;
+  background-color: #2ECC71;
+  position: absolute;
+  border-bottom-left-radius: 80%;
+  border-top-right-radius: 10px;
+}
