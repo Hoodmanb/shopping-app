@@ -14,7 +14,7 @@ const axiosClient = async (url, method = 'GET', data = {}, token = null) => {
     let baseURL = '';
 
     if (environment === 'production') {
-      baseURL = 'https://shopping-app-0ig3.onrender.com';
+      baseURL = 'https://api.hawk-mart.vercel.app';
     }
 
     const headers = {
@@ -23,8 +23,8 @@ const axiosClient = async (url, method = 'GET', data = {}, token = null) => {
     };
 
     const response = await axios({
-      baseURL, // Use baseURL instead of baseUrl
-      url, // Separate url key instead of combining it with baseURL
+      baseURL,
+      url,
       method,
       data: ['POST', 'PUT', 'PATCH'].includes(method.toUpperCase()) ? data : undefined, // Only include data when necessary
       headers,

@@ -17,6 +17,7 @@
     "@paystack/inline-js": "^2.22.1",
     "@toolpad/core": "^0.11.0",
     "axios": "^1.8.2",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.1",
     "firebase": "^11.0.1",

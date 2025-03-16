@@ -1,60 +1,74 @@
-import express from 'express'
-import mongoClient from './config/mongodb.js'
+import express from 'express';
+import mongoClient from './config/mongodb.js';
+import cors from "cors";
 
 //middlewares
-import verifyToken from './middleware/firebase-admin-auth.js'
-import isAdmin from "./middleware/isAdmin.js"
-// import isSuspended from "./middleware/isSuspended.js"
-// import isPaystackCustomer from './middleware/paystack.js'
+import verifyToken from './middleware/firebase-admin-auth.js';
+import isAdmin from "./middleware/isAdmin.js";
+// import isSuspended from "./middleware/isSuspended.js";
+// import isPaystackCustomer from './middleware/paystack.js';
 
 //routes
-import productRouter from './routes/products.js'
-import chartRouter from './routes/chart.js'
-import previlagedroutes from './routes/previlagedActions.js'
-import paystackRouter from './routes/paystack.js'
+import productRouter from './routes/products.js';
+import chartRouter from './routes/chart.js';
+import previlagedroutes from './routes/previlagedActions.js';
+import paystackRouter from './routes/paystack.js';
 
 // controller
-import { getProduct, getProducts, getCartItems } from "./controller/products.js"
+import { getProduct, getProducts, getCartItems } from "./controller/products.js";
 
 // environment configuration
 const port = process.env.PORT || 3000;
 const dev = process.env.NODE_ENV !== 'production';
 
+const corsOptions = {
+  origin: ['https://hawk-mart.vercel.app'], // Removed trailing slash
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+};
+
 const startServer = async () => {
-  const server = express()
+  const server = express();
 
-  await mongoClient.connect()
+  await mongoClient.connect();
 
-  server.use(express.json())
+  // CORS should be applied before parsing JSON
+  server.use(cors(corsOptions));
 
-  server.get("/api/products", getProducts)
+  server.use(express.json());
 
-  server.get("/api/product/:id", getProduct)
+  server.get("/api/products", getProducts);
 
-  server.post("/api/cart-items", getCartItems)
+  server.get("/api/product/:id", getProduct);
 
-  // server.use("/api", verifyToken, isSuspended, isPaystackCustomer)
+  server.post("/api/cart-items", getCartItems);
 
-  server.use("/api", verifyToken)
+  // server.use("/api", verifyToken, isSuspended, isPaystackCustomer);
+  server.use("/api", verifyToken);
 
-  server.use(paystackRouter)
+  server.use(paystackRouter);
 
-  server.use(productRouter)
+  server.use(productRouter);
 
-  server.use(chartRouter)
+  server.use(chartRouter);
 
-  server.use("/api/admin", isAdmin)
+  server.use("/api/admin", isAdmin);
 
-  server.use(previlagedroutes)
+  server.use(previlagedroutes);
 
+  // Enable Next.js only in development mode
   if (dev) {
     const next = await import('next');
+    const { parse } = await import('url'); // Required for handling routes
+
     const app = next.default({ dev });
     const handle = app.getRequestHandler();
     await app.prepare();
 
     server.all('*', (req, res) => {
-      return handle(req, res);
+      const parsedUrl = parse(req.url, true);
+      return handle(req, res, parsedUrl);
     });
   }
 
