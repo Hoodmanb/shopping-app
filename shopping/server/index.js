@@ -1,9 +1,4 @@
-// server.js
 import express from 'express'
-import next from 'next'
-import { parse } from 'url'
-import path from 'path'
-
 import mongoClient from './config/mongodb.js'
 
 //middlewares
@@ -22,12 +17,10 @@ import paystackRouter from './routes/paystack.js'
 import { getProduct, getProducts, getCartItems } from "./controller/products.js"
 
 // environment configuration
+const port = process.env.PORT || 3000;
 const dev = process.env.NODE_ENV !== 'production';
-const app = next({ dev });
-const handle = app.getRequestHandler();
-const port = process.env.PORT || 3000
 
-app.prepare().then(async () => {
+const startServer = async () => {
   const server = express()
 
   await mongoClient.connect()
@@ -54,15 +47,22 @@ app.prepare().then(async () => {
 
   server.use(previlagedroutes)
 
-  // Handling all other requests with Next.js' built-in handler
-  server.all('*', (req, res) => {
-    // const parsedUrl = parse(req.url, true);
-    handle(req, res);
-  });
+  if (dev) {
+    const next = await import('next');
+    const app = next.default({ dev });
+    const handle = app.getRequestHandler();
+    await app.prepare();
+
+    server.all('*', (req, res) => {
+      return handle(req, res);
+    });
+  }
 
   // Start the server
   server.listen(port, (err) => {
     if (err) throw err;
     console.log(`> Ready on http://localhost:${port}`);
   });
-});
+};
+
+startServer();
