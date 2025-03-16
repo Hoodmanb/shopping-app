@@ -1,6 +1,8 @@
-import React from "react";
+import React from 'react';
 
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from '@mui/material';
+import {
+  Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button,
+} from '@mui/material';
 
 export default function TransactionTable({ transactions }) {
   const tableCell = ['Id', 'Date', 'Name', 'Amount', 'Method', 'Action'];
@@ -10,7 +12,7 @@ export default function TransactionTable({ transactions }) {
       <Table>
         <TableHead>
           <TableRow>
-            {tableCell.map(cell => (
+            {tableCell.map((cell) => (
               <TableCell
                 key={cell}
                 sx={{
@@ -34,8 +36,8 @@ export default function TransactionTable({ transactions }) {
                   transaction.status === 'Successful'
                     ? '#d4edda'
                     : transaction.status === 'Failed'
-                    ? '#f8d7da'
-                    : '#fff3cd',
+                      ? '#f8d7da'
+                      : '#fff3cd',
               }}
             >
               <TableCell

@@ -5,7 +5,7 @@ import mongoClient from '../config/mongodb.js'
 import suspend from '../model/suspend.js'
 
 const suspendHandler = suspend
-await mongoClient.connect()
+// await mongoClient.connect()
 
 export const makeAdmin = async (req, res) => {
   const uid = req.body.id
@@ -27,29 +27,29 @@ export const makeAdmin = async (req, res) => {
       })
     }
 
-  } catch(error) {}
+  } catch (error) { }
 }
 
-export const suspendUser = async (req, res){
+export const suspendUser = async (req, res) => {
   const uid = req.body.id
-  
-  try{
+
+  try {
     const suspendthis = await suspendHandler.suspend(uid)
-    console.log(`user with id: ${uid}` have being suspendend)
-    return res.status(200).json({message:"successful", info:`user with id ${uid} suspendend`})
-  } catch(error){
-    return res.status(500).json({message:"error", info:`error suspending user: ${uid}`})
+    console.log(`user with id: ${uid} have being suspendend`)
+    return res.status(200).json({ message: "successful", info: `user with id ${uid} suspendend` })
+  } catch (error) {
+    return res.status(500).json({ message: "error", info: `error suspending user: ${uid}` })
   }
 }
 
-export const unsuspend = async (req, res) {
+export const unsuspend = async (req, res) => {
   const uid = req.body.id
-  
-  try{
+
+  try {
     const unsuspendthis = await suspendHandler.unsuspend(uid)
     console.log(`user with id: ${uid} have being unsuspendend`)
-    return res.status(200).json({message:"successful", info:`user with id ${uid} unsuspendend`})
-  } catch(error){
-    return res.status(500).json({message:"error", info:`error unsuspending user: ${uid}`, error})
+    return res.status(200).json({ message: "successful", info: `user with id ${uid} unsuspendend` })
+  } catch (error) {
+    return res.status(500).json({ message: "error", info: `error unsuspending user: ${uid}`, error })
   }
 }

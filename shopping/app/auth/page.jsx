@@ -1,15 +1,15 @@
-"use client"
+'use client';
 
 import { Box, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import styles from "@/app/assets/css-files/Auth.module.css";
-import Link from "next/link";
+import Link from 'next/link';
+import styles from "@/public/css-files/Auth.module.css"
 
 export default function Auth() {
-  const theme = useTheme();  // Access the current theme
+  const theme = useTheme(); // Access the current theme
 
   return (
-    <Box 
+    <Box
       sx={{
         height: '100%',
         display: 'flex',
@@ -17,8 +17,8 @@ export default function Auth() {
         justifyContent: 'space-between',
       }}
     >
-      <Typography 
-        variant="h2" 
+      <Typography
+        variant="h2"
         sx={{
           display: 'flex',
           justifyContent: 'center',
@@ -28,7 +28,7 @@ export default function Auth() {
       >
         Welcome!
       </Typography>
-      <Box 
+      <Box
         sx={{
           display: 'flex',
           alignItems: 'center',
@@ -38,15 +38,15 @@ export default function Auth() {
         }}
       >
         <Link className={`${styles.sign} `} href="/auth/login">
-          <span >Sign In</span>
+          <span>Sign In</span>
         </Link>
-        
+
         <Link
           className={`${styles.sign}`}
           style={{
             backgroundColor: theme.customColors.primary,
-            color:theme.customColors.secondary,
-            borderTopLeftRadius:'1.4em'
+            color: theme.customColors.secondary,
+            borderTopLeftRadius: '1.4em',
           }}
           href="/auth/signup"
         >

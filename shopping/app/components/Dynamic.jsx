@@ -1,13 +1,8 @@
-// components/ClientDashboard.js
-"use client"
-import dynamic from 'next/dynamic';
-
-const ClientComponent = dynamic(() => import('./Swiper.js'), { ssr: false });
+import NavigationPanel from './Swiper';
 
 export default function ClientDashboard() {
+
   return (
-    <div>
-      <ClientComponent />
-    </div>
+    <NavigationPanel />
   );
 }

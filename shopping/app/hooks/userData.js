@@ -1,1 +1,1 @@
-import {modifyUserData, verified, setUserData} from '../model/user.js';
+import { modifyUserData, verified, setUserData } from '../model/user.js';

@@ -4,11 +4,13 @@ import next from 'next'
 import { parse } from 'url'
 import path from 'path'
 
+import mongoClient from './config/mongodb.js'
+
 //middlewares
 import verifyToken from './middleware/firebase-admin-auth.js'
 import isAdmin from "./middleware/isAdmin.js"
-import isSuspended from "./middleware/isSuspended.js"
-import isPaystackCustomer from './middleware/paystack.js'
+// import isSuspended from "./middleware/isSuspended.js"
+// import isPaystackCustomer from './middleware/paystack.js'
 
 //routes
 import productRouter from './routes/products.js'
@@ -17,7 +19,7 @@ import previlagedroutes from './routes/previlagedActions.js'
 import paystackRouter from './routes/paystack.js'
 
 // controller
-import {getProduct, getProducts} from "./controller/products.js"
+import { getProduct, getProducts, getCartItems } from "./controller/products.js"
 
 // environment configuration
 const dev = process.env.NODE_ENV !== 'production';
@@ -25,26 +27,32 @@ const app = next({ dev });
 const handle = app.getRequestHandler();
 const port = process.env.PORT || 3000
 
-app.prepare().then(() => {
+app.prepare().then(async () => {
   const server = express()
-  
-  // server.use(express.json())
-  
-  // server.get("/api/products", getProducts)
-  
-  // server.get("/api/product/:id", getProduct)
-  
-  // server.use("/api", verifyToken, isSuspended, isPaystackCustomer)
-  
-  // server.use(paystackRouter)
 
-  // server.use(productRouter)
-  
-  // server.use(chartRouter)
-  
-  // server.use("/api/admin", isAdmin)
-  
-  // server.use(previlagedroutes)
+  await mongoClient.connect()
+
+  server.use(express.json())
+
+  server.get("/api/products", getProducts)
+
+  server.get("/api/product/:id", getProduct)
+
+  server.post("/api/cart-items", getCartItems)
+
+  // server.use("/api", verifyToken, isSuspended, isPaystackCustomer)
+
+  server.use("/api", verifyToken)
+
+  server.use(paystackRouter)
+
+  server.use(productRouter)
+
+  server.use(chartRouter)
+
+  server.use("/api/admin", isAdmin)
+
+  server.use(previlagedroutes)
 
   // Handling all other requests with Next.js' built-in handler
   server.all('*', (req, res) => {

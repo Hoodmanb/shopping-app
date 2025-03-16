@@ -1,12 +1,12 @@
-import React from "react";
-import { Box } from "@mui/material";
+import React from 'react';
+import { Box } from '@mui/material';
 
-import Transaction from "./transactions/Transactions"
+import Transaction from './transactions/Transactions';
 
 function Transactions() {
   return (
     <Box>
-      <Transaction/>
+      <Transaction />
     </Box>
   );
 }

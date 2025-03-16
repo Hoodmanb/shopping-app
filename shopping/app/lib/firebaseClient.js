@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { setPersistence, browserSessionPersistence, getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore"; // Corrected the firestore import
+import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore'; // Corrected the firestore import
 
 // firebaseConfig.js or in your Firebase setup file
 const firebaseConfig = {
@@ -18,14 +18,3 @@ const firebaseConfig = {
 export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app); // Use the function to initialize Firestore
-
-setPersistence(auth, browserSessionPersistence)
-  .then(() => {
-    console.log('persisted');
-  })
-  .catch((error) => {
-    // Handle Errors here.
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    console.error(`Error: ${errorCode} - ${errorMessage}`);
-  });

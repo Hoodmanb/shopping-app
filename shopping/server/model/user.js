@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
-import paystack from '../services/payStack.js'
+// import paystack from '../services/payStack.js'
 
-const payStackHandler = paystack
+// const payStackHandler = paystack
 // Define the User schema
 const userSchema = new mongoose.Schema({
   firebaseUserId: { type: String, required: true },
@@ -17,40 +17,40 @@ class User {
     this.User = UserModel;
   }
 
-// Add a new user if they don't already exist
-addUser = async (userId, email) => {
-  try {
-    // Check if the user already exists
-    const user = await this.User.findOne({ firebaseUserId: userId });
-    
-    if (!user) {
-      try {
-        // Create a new customer on Paystack
-        const newCustomer = await paystack.createCustomer(userId, email);
-        const customerId = newCustomer.data.customer_code;
+  // Add a new user if they don't already exist
+  addUser = async (userId, email) => {
+    try {
+      // Check if the user already exists
+      const user = await this.User.findOne({ firebaseUserId: userId });
 
-        // Create a new user in the database
-        const newUser = new this.User({
-          firebaseUserId: userId,
-          paystackCustomerId: customerId,
-        });
+      if (!user) {
+        try {
+          // Create a new customer on Paystack
+          const newCustomer = await paystack.createCustomer(userId, email);
+          const customerId = newCustomer.data.customer_code;
 
-        await newUser.save(); // Save the user to the database
-        console.log(newUser.paystackCustomerId)
-        return {newUser, message:'successful'}
-        
-      } catch (error) {
-        console.error('Error creating Paystack customer:', error);
-        throw error;
+          // Create a new user in the database
+          const newUser = new this.User({
+            firebaseUserId: userId,
+            paystackCustomerId: customerId,
+          });
+
+          await newUser.save(); // Save the user to the database
+          console.log(newUser.paystackCustomerId)
+          return { newUser, message: 'successful' }
+
+        } catch (error) {
+          console.error('Error creating Paystack customer:', error);
+          throw error;
+        }
+      } else {
+        return { newUser, message: 'successful', info: 'User already created' }
       }
-    } else {
-      return {newUser, message: 'successful', info:'User already created'}
+    } catch (error) {
+      console.error('Error adding user:', error);
+      throw error;
     }
-  } catch (error) {
-    console.error('Error adding user:', error);
-    throw error;
-  }
-};
+  };
 
   // Example function to delete a user (not implemented)
   deleteUser = async (userId) => {
@@ -71,7 +71,7 @@ addUser = async (userId, email) => {
   getUser = async (userId) => {
     try {
       const user = await this.User.findOne({ firebaseUserId: userId });
-      
+
       if (user) {
         return user.paystackCustomerId;
       } else {

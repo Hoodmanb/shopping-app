@@ -1,9 +1,9 @@
-import React from "react"
+import React from 'react';
 
-export default function Subscription(){
-  return(
+export default function Subscription() {
+  return (
     <div>
       Subscription
     </div>
-    )
+  );
 }

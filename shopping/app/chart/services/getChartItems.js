@@ -1,12 +1,12 @@
 const getChartItems = async (id) => {
-  const idToken = sessionStorage.getItem("clientIdToken") || null;
+  const idToken = sessionStorage.getItem('clientIdToken') || null;
 
   try {
-    const res = await fetch(`/api/chart`, {
-      method: "GET",
+    const res = await fetch('/api/chart', {
+      method: 'GET',
       headers: {
         Authorization: idToken,
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
     });
 
@@ -16,7 +16,7 @@ const getChartItems = async (id) => {
 
     const data = await res.json();
 
-    if (data.message === "successful") {
+    if (data.message === 'successful') {
       return data.chart;
     }
     return data.message;

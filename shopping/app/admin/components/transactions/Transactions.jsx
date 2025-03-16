@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   Box,
   TextField,
@@ -8,10 +8,10 @@ import {
   InputLabel,
   Select,
   Typography,
-} from "@mui/material";
+} from '@mui/material';
 
-import Pagination from "@mui/material/Pagination";
-import TransactionTable from "./subComponents/Table.jsx";
+import Pagination from '@mui/material/Pagination';
+import TransactionTable from './subComponents/Table.jsx';
 
 function Transaction() {
   // Simulating a larger dataset
@@ -20,21 +20,21 @@ function Transaction() {
     user: `User ${i + 1}`,
     amount: `$${(Math.random() * 500 + 50).toFixed(2)}`,
     date: `Dec ${Math.floor(Math.random() * 31 + 1)}, 2024 - ${Math.floor(
-      Math.random() * 12 + 1
-    )}:${Math.floor(Math.random() * 60).toString().padStart(2, "0")} ${
-      Math.random() > 0.5 ? "AM" : "PM"
+      Math.random() * 12 + 1,
+    )}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')} ${
+      Math.random() > 0.5 ? 'AM' : 'PM'
     }`,
-    status: ["Successful", "Failed", "Pending"][
+    status: ['Successful', 'Failed', 'Pending'][
       Math.floor(Math.random() * 3)
     ],
-    method: ["PayPal", "Credit Card", "Bank Transfer", "Debit Card", "Cash"][
+    method: ['PayPal', 'Credit Card', 'Bank Transfer', 'Debit Card', 'Cash'][
       Math.floor(Math.random() * 5)
     ],
   }));
 
   const [transactions, setTransactions] = useState(transactionList);
-  const [status, setStatus] = useState("");
-  const [searchQuery, setSearchQuery] = useState("");
+  const [status, setStatus] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
@@ -42,14 +42,12 @@ function Transaction() {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const paginatedTransactions = transactions.slice(
     startIndex,
-    startIndex + itemsPerPage
+    startIndex + itemsPerPage,
   );
 
   // Filter by search query
   const handleSearch = () => {
-    const filtered = transactionList.filter((transaction) =>
-      transaction.id.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    const filtered = transactionList.filter((transaction) => transaction.id.toLowerCase().includes(searchQuery.toLowerCase()));
     setTransactions(filtered);
     setCurrentPage(1); // Reset to the first page
   };
@@ -60,7 +58,7 @@ function Transaction() {
       setTransactions(transactionList); // Show all if no filter is selected
     } else {
       const filtered = transactionList.filter(
-        (transaction) => transaction.status === selectedStatus
+        (transaction) => transaction.status === selectedStatus,
       );
       setTransactions(filtered);
     }
@@ -68,13 +66,13 @@ function Transaction() {
   };
 
   return (
-    <Box sx={{maxWidth:'95vw'}}>
+    <Box sx={{ maxWidth: '95vw' }}>
       <Box
         sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          marginTop: "20px",
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginTop: '20px',
         }}
       >
         <TextField
@@ -87,14 +85,14 @@ function Transaction() {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           sx={{
-            marginRight: "10px",
-            width: "70%",
+            marginRight: '10px',
+            width: '70%',
           }}
         />
         <Button
           variant="contained"
           color="primary"
-          sx={{ height: "100%" }}
+          sx={{ height: '100%' }}
           onClick={handleSearch}
         >
           Search
@@ -103,31 +101,33 @@ function Transaction() {
 
       <Box
         sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          width: "60%",
-          marginTop: "20px",
-          marginBottom: "15px",
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          width: '60%',
+          marginTop: '20px',
+          marginBottom: '15px',
         }}
       >
         <Typography variant="body2">
-          {transactions.length} Transactions
+          {transactions.length}
+          {' '}
+          Transactions
         </Typography>
 
-        <FormControl sx={{ minWidth: 80, padding: "0.8em", margin: "0px" }}>
+        <FormControl sx={{ minWidth: 80, padding: '0.8em', margin: '0px' }}>
           <InputLabel id="filterLabel">Filter</InputLabel>
           <Select
             labelId="filterLabel"
             id="filter"
-            value={status || ""}
+            value={status || ''}
             onChange={(e) => {
               setStatus(e.target.value);
               filterByStatus(e.target.value);
             }}
             autoWidth
             label="Filter"
-            sx={{ height: "2em" }}
+            sx={{ height: '2em' }}
           >
             <MenuItem value="">All</MenuItem>
             <MenuItem value="Successful">Success</MenuItem>
@@ -141,7 +141,7 @@ function Transaction() {
       <TransactionTable transactions={paginatedTransactions} />
 
       {/* Pagination */}
-      <Box sx={{ display: "flex", justifyContent: "center", marginTop: "20px" }}>
+      <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
         <Pagination
           count={Math.ceil(transactions.length / itemsPerPage)}
           page={currentPage}

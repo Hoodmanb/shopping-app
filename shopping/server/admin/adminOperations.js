@@ -2,11 +2,9 @@
 import firebaseAdmin from "../config/firebase-admin.js"
 import isAdmin from "./adminCheck.js"
 
-import mongoClient from '../config/mongodb.js'
 import suspend from '../model/suspend.js'
 
 const suspendHandler = suspend
-await mongoClient.connect()
 
 export const makeAdmin = async (req, res) => {
   // this route adds a user as admin, it expects the userId from the request body
@@ -29,7 +27,7 @@ export const makeAdmin = async (req, res) => {
       })
     }
 
-  } catch(error) {}
+  } catch (error) { }
 }
 
 export const suspendUser = async (req, res) => {
@@ -50,7 +48,7 @@ export const suspendUser = async (req, res) => {
         info: "you are unautorized", message: 'error'
       })
     }
-  } catch(error) {
+  } catch (error) {
     return res.status(500).json({
       message: "error", info: `error suspending user: ${uid}`
     })
@@ -75,7 +73,7 @@ export const unsuspend = async (req, res) => {
         info: "you are unautorized", message: 'error'
       })
     }
-  } catch(error) {
+  } catch (error) {
     return res.status(500).json({
       message: "error", info: `error unsuspending user: ${uid}`, error
     })

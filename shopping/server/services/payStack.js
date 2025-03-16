@@ -3,22 +3,18 @@ import {
 } from "./utils.js"
 import https from 'https'
 
-import mongoClient from '../config/mongodb.js'
 import subscriptionService from '../model/subscribe.js'
 
-// await mongoClient.connect();
 
 import user from '../model/user.js'
-
-await mongoClient.connect();
 
 const subscribeHandler = subscriptionService;
 // const userHandler = user
 // const referenceHandler = reference
 
 class Paystack {
-  constructor() {}
-  
+  constructor() { }
+
   createCustomer = async (userId, email) => {
     const options = optionFunction('/customer', 'POST')
     const params = JSON.stringify({
@@ -27,22 +23,22 @@ class Paystack {
         "userId": userId
       }
     })
-    
+
     try {
       const response = await createCustomerFunction(options, params);
-      if(response.status === true){
+      if (response.status === true) {
         const customerId = response.customer_code
         await user.addUser(userId, customerId)
         return {
           code: 200,
           info: 'user created successfully',
           message: 'successful',
-          data:response
+          data: response
         };
-      } else{
-        return{
+      } else {
+        return {
           code: 200,
-          data:response
+          data: response
         }
       }
     } catch (error) {
@@ -54,13 +50,13 @@ class Paystack {
       };
     }
   }
-  
+
   initializeTransaction = async (email, amount, productsInfo) => {
     const options = optionFunction('/transaction/initialize', 'POST');
 
     try {
-      const paystackCustomer = req.customerId ||  await user.getUser(userId)
-      
+      const paystackCustomer = req.customerId || await user.getUser(userId)
+
       // Prepare the payload for the Paystack request
       const params = JSON.stringify({
         "email": email,
@@ -72,7 +68,7 @@ class Paystack {
           "cancel_action": "https://your-cancel-url.com"
         }
       });
-      
+
       const response = await initialiseRequest(options, params);
       const ref = {
         reference: response.data.reference
@@ -87,7 +83,7 @@ class Paystack {
         info: 'Transaction initialization successful',
         message: 'successful',
         url: url,
-        data:response
+        data: response
       };
     } catch (error) {
       console.error('Error:', error);
@@ -152,7 +148,7 @@ class Paystack {
 
       req.end();
     });
-  } 
+  }
 }
 
 const paystack = new Paystack();

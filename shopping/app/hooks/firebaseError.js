@@ -1,7 +1,7 @@
-"use client"
 // Function to handle Firebase errors
-export default function handleSignupError(code){
-    switch (code) {
+export default function handleFirebaseError(code) {
+  switch (code) {
+    // Authentication Errors
     case 'auth/invalid-email':
       return 'The email address is not valid.';
     case 'auth/email-already-in-use':
@@ -38,7 +38,33 @@ export default function handleSignupError(code){
       return 'The credential is invalid.';
     case 'auth/missing-email':
       return 'Email address is required.';
+
+    // Storage Errors
+    case 'storage/unauthorized':
+      return 'You are not authorized to access this storage location.';
+    case 'storage/canceled':
+      return 'The operation was canceled.';
+    case 'storage/unknown':
+      return 'An unknown error occurred while accessing storage.';
+    case 'storage/quota-exceeded':
+      return 'Storage quota exceeded.';
+    case 'storage/retry-limit-exceeded':
+      return 'Retry limit for upload exceeded, please try again.';
+    case 'storage/invalid-argument':
+      return 'Invalid argument provided to storage.';
+    case 'storage/invalid-event-name':
+      return 'Invalid event name provided.';
+    case 'storage/invalid-url':
+      return 'Invalid URL provided to storage.';
+    case 'storage/unauthenticated':
+      return 'User is unauthenticated, please authenticate and try again.';
+    case 'storage/server-file-wrong-size':
+      return 'Server file wrong size, please try again.';
+    case 'storage/bucket-not-found':
+      return 'The storage bucket could not be found.';
+    case 'storage/object-not-found':
+      return 'The storage object could not be found.';
     default:
       return `Unknown error: ${code}`;
   }
-};
+}
