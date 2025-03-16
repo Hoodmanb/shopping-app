@@ -27,16 +27,25 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+
 app.use(express.json())
 
 app.get("/api/products", getProducts)
+
 app.get("/api/product/:id", getProduct)
+
 app.post("/api/cart-items", getCartItems)
+
 app.use("/api", verifyToken)
+
 app.use(paystackRouter)
+
 app.use(productRouter)
+
 app.use(chartRouter)
+
 app.use("/api/admin", isAdmin)
+
 app.use(previlagedroutes)
 
 // Don't include Next.js handling here - Vercel will handle that separately
