@@ -119,17 +119,12 @@ export const useThemeContext = () => useContext(ThemeContext);
 export default function RootLayout({ children }) {
   // Using useEffect to handle client-side only code
   const [mounted, setMounted] = useState(false);
-  const [prefersDarkMode, setPrefersDarkMode] = useState(false);
   const [mode, setMode] = useState('light'); // Default to light for server render
   const [width, setWidth] = useState(449); // Default to desktop for server render
   const containerRef = useRef(null);
 
   useEffect(() => {
     setMounted(true);
-    // Check dark mode preference on client side
-    const darkModeQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    setPrefersDarkMode(darkModeQuery.matches);
-    setMode(darkModeQuery.matches ? 'dark' : 'light');
 
     // Initialize auth listener
     initAuthListener();
