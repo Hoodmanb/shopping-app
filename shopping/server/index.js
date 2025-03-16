@@ -1,6 +1,6 @@
 import express from 'express'
 import mongoClient from './config/mongodb.js'
-import cors from "cors"
+import cors from "cors";
 
 //middlewares
 import verifyToken from './middleware/firebase-admin-auth.js'
@@ -22,11 +22,12 @@ const port = process.env.PORT || 3000;
 const dev = process.env.NODE_ENV !== 'production';
 
 const corsOptions = {
-  origin: ['https://hawk-mart.vercel.app'],
+  origin: dev ? ['http://localhost:3000', 'https://hawk-mart.vercel.app'] : ['https://hawk-mart.vercel.app'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
 };
+
 
 const startServer = async () => {
   const server = express()
