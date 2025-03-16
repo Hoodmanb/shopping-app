@@ -10,8 +10,13 @@ import axios from 'axios';
  */
 const axiosClient = async (url, method = 'GET', data = {}, token = null) => {
   try {
-    const environment = process.env.NODE_ENV;
-    const baseURL = process.env.BASE_URL;
+    // Determine the base URL based on environment
+    const isProduction = process.env.NODE_ENV === 'production';
+
+    // Use environment variables if available, otherwise fallback to hardcoded values
+    const baseURL = isProduction
+      ? process.env.NEXT_PUBLIC_API_URL || 'https://apihawk-mart.vercel.app'
+      : process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 
     const headers = {
       'Content-Type': 'application/json',
@@ -22,14 +27,14 @@ const axiosClient = async (url, method = 'GET', data = {}, token = null) => {
       baseURL,
       url,
       method,
-      data: ['POST', 'PUT', 'PATCH'].includes(method.toUpperCase()) ? data : undefined, // Only include data when necessary
+      data: ['POST', 'PUT', 'PATCH'].includes(method.toUpperCase()) ? data : undefined,
       headers,
     });
 
-    return response.data; // Return only the data
+    return response.data;
   } catch (error) {
     console.error('Axios Request Error:', error?.response?.data || error.message);
-    throw error?.response?.data || error.message; // Throw error for handling
+    throw error?.response?.data || error.message;
   }
 };
 
