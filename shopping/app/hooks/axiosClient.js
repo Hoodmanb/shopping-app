@@ -11,11 +11,7 @@ import axios from 'axios';
 const axiosClient = async (url, method = 'GET', data = {}, token = null) => {
   try {
     const environment = process.env.NODE_ENV;
-    let baseURL = '';
-
-    if (environment === 'production') {
-      baseURL = 'https://api.hawk-mart.vercel.app';
-    }
+    const baseURL = process.env.BASE_URL;
 
     const headers = {
       'Content-Type': 'application/json',

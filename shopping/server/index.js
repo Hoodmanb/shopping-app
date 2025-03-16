@@ -1,6 +1,10 @@
+// server.js
 import express from 'express'
+import next from 'next'
+import { parse } from 'url'
+import path from 'path'
+
 import mongoClient from './config/mongodb.js'
-import cors from "cors";
 
 //middlewares
 import verifyToken from './middleware/firebase-admin-auth.js'
@@ -18,23 +22,15 @@ import paystackRouter from './routes/paystack.js'
 import { getProduct, getProducts, getCartItems } from "./controller/products.js"
 
 // environment configuration
-const port = process.env.PORT || 3000;
 const dev = process.env.NODE_ENV !== 'production';
+const app = next({ dev });
+const handle = app.getRequestHandler();
+const port = process.env.PORT || 3000
 
-const corsOptions = {
-  origin: dev ? ['http://localhost:3000', 'https://hawk-mart.vercel.app'] : ['https://hawk-mart.vercel.app'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true,
-};
-
-
-const startServer = async () => {
+app.prepare().then(async () => {
   const server = express()
 
   await mongoClient.connect()
-
-  server.use(cors(corsOptions));
 
   server.use(express.json())
 
@@ -58,22 +54,15 @@ const startServer = async () => {
 
   server.use(previlagedroutes)
 
-  if (dev) {
-    const next = await import('next');
-    const app = next.default({ dev });
-    const handle = app.getRequestHandler();
-    await app.prepare();
-
-    server.all('*', (req, res) => {
-      return handle(req, res);
-    });
-  }
+  // Handling all other requests with Next.js' built-in handler
+  server.all('*', (req, res) => {
+    // const parsedUrl = parse(req.url, true);
+    handle(req, res);
+  });
 
   // Start the server
   server.listen(port, (err) => {
     if (err) throw err;
     console.log(`> Ready on http://localhost:${port}`);
   });
-};
-
-startServer();
+});

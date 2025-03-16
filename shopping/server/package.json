@@ -3,14 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "dev": "node dev-server.js",
+    "build": "next build",
+    "start": "NODE_ENV=production node dev-server.js"
   },
   "dependencies": {
     "dotenv": "^16.4.7",
     "express": "^4.21.1",
     "firebase-admin": "^13.0.0",
-    "mongoose": "^8.8.1"
+    "mongoose": "^8.8.1",
+    "cors": "^2.8.5"
   },
   "type": "module",
   "devDependencies": {
