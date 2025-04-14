@@ -23,13 +23,20 @@ import image8 from '@/public/images/image8.png';
 import Account from './Account';
 import axiosClient from '../hooks/axiosClient';
 
+import { useQueryClient, useQuery,} from '@tanstack/react-query';
+
 import styles from '@/public/css-files/Home.module.css';
+import Products from '../admin/components/Products';
+import ProductsSkeleton from './Skeleton/Products';
+import { useModalStore } from '../store/useModalStore';
+import SignIn from './Auth/Login';
 
 export default function Home() {
   const { user } = useAuthStore();
   const [isUser, setUser] = useState(null);
   const [products, setProducts] = useState({})
   const router = useRouter()
+  const {openModal} = useModalStore()
 
   const notifications = useNotifications();
   const showNotification = (text, type) => {
@@ -48,7 +55,7 @@ export default function Home() {
     'Men Fashion',
   ];
 
-  useEffect(() => {
+  /*useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axiosClient("/api/products", "GET");
@@ -60,7 +67,26 @@ export default function Home() {
     };
 
     fetchData();
-  }, []);
+  }, []);*/
+
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['products'],
+    queryFn: async () => {
+      const response = await axiosClient('/api/products', 'GET');
+      /*if (response.message === 'successful') return response.products;*/
+      if (response.message === 'successful') {
+        if (response.products.length === 0) return 'empty';
+        return response.products;
+      }
+      throw new Error('Failed to fetch products');
+    },
+  });
+
+  useEffect(() => {
+    if (data && data !== 'empty') {
+      setProducts(data);
+    }
+  }, [data]);
 
   useEffect(() => {
     setUser(user);
@@ -155,10 +181,11 @@ export default function Home() {
           </Menu>
           {!isUser && (
             <Button
-              component="a"
-              href="/auth/login"
               variant="text"
               size="small"
+              onClick={() => 
+                openModal(SignIn)
+              }
               sx={{
                 textTransform: 'none',
                 color: (theme) => theme.customColors.green,
@@ -323,8 +350,11 @@ export default function Home() {
           ))}
         </Stack>
       </Box>
+      
       {
-        products.length > 0 && products.length !== "empty" ? (
+        isLoading ? (<ProductsSkeleton/> ) :
+        error ? (<Box>Error</Box>) :
+        products.length >= 1 && products !== "empty" ? (
           <Box
             sx={{
               display: 'flex',
