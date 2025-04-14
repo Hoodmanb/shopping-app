@@ -1,27 +1,27 @@
 import mongoose from 'mongoose';
 
 const Schema = mongoose.Schema;
-const ChartItemSchema = new Schema({
-  chartItemId: { type: String, required: true, unique: true }, // Unique item identifier
+const CartItemSchema = new Schema({
+  cartItemId: { type: String, required: true, unique: true }, // Unique item identifier
   quantity: { type: Number, default: 1 },
   price: { type: Number, required: true }
 });
 
-const ChartSchema = new Schema({
+const CartSchema = new Schema({
   createdBy: { type: String, required: true, unique: true }, // User-specific cart
-  items: [ChartItemSchema], // Array of cart items
+  items: [CartItemSchema], // Array of cart items
 });
 
 // Check if the model already exists before creating it
-const ChartModel = mongoose.models.Chart || mongoose.model('Chart', ChartSchema);
+const CartModel = mongoose.models.Cart || mongoose.model('Cart', CartSchema);
 
-class Chart {
+class Cart {
   constructor() { }
 
-  async isCreator(chartId, userId) {
+  async isCreator(cartId, userId) {
     try {
-      const chart = await ChartModel.findOne({ createdBy: userId });
-      if (chart) {
+      const cart = await CartModel.findOne({ createdBy: userId });
+      if (cart) {
         return true;
       } return false
     } catch (error) {
@@ -41,20 +41,20 @@ class Chart {
   //   }
   // }
 
-  async deleteChartItem(userId, chartId) {
+  async deleteCartItem(userId, cartId) {
     try {
       // Find the chart belonging to the user
-      const chart = await ChartModel.findOne({ createdBy: userId });
+      const cart = await CartModel.findOne({ createdBy: userId });
 
-      if (!chart) {
-        throw new Error("Chart not found for the user");
+      if (!cart) {
+        throw new Error("Cart not found for the user");
       }
 
       // Filter out the item with the matching `chartId`
-      chart.items = chart.items.filter(item => item.chartItemId !== chartId);
+      cart.items = cart.items.filter(item => item.cartItemId !== cartId);
 
       // Save the updated chart
-      await chart.save();
+      await cart.save();
 
       return { status: "successful", message: "Item deleted successfully" };
     } catch (error) {
@@ -64,103 +64,103 @@ class Chart {
   }
 
 
-  async addToChart(userId, updatedFields) {
+  async addToCart(userId, updatedFields) {
     try {
       // Find the cart for this user
-      let chart = await ChartModel.findOne({ createdBy: userId });
+      let cart = await CartModel.findOne({ createdBy: userId });
 
-      if (!chart) {
+      if (!cart) {
         // If the chart doesn't exist, create a new one
-        chart = new ChartModel({
+        cart = new CartModel({
           createdBy: userId,
           items: [updatedFields]
         });
-        await chart.save();
-        return { status: "successful", message: 'item added successfully', data: chart };
+        await cart.save();
+        return { status: "successful", message: 'item added successfully', data: cart };
       }
 
       // Ensure chartItemId is unique before adding
-      const existingItemIndex = chart.items.findIndex(
-        (item) => item.chartItemId === updatedFields.chartItemId
+      const existingItemIndex = cart.items.findIndex(
+        (item) => item.cartItemId === updatedFields.cartItemId
       );
 
       if (existingItemIndex !== -1) {
         // If the item exists, update it
-        chart.items[existingItemIndex] = { ...chart.items[existingItemIndex], ...updatedFields };
-        await chart.save();
-        return { status: "exist", message: 'item already in chart', data: chart };
+        cart.items[existingItemIndex] = { ...cart.items[existingItemIndex], ...updatedFields };
+        await cart.save();
+        return { status: "exist", message: 'item already in cart', data: cart };
       }
 
       // Otherwise, add the new item
-      chart.items.push(updatedFields);
-      await chart.save();
+      cart.items.push(updatedFields);
+      await cart.save();
 
-      return { status: "successful", message: 'item added successfully', data: chart };
+      return { status: "successful", message: 'item added successfully', data: cart };
     } catch (error) {
-      console.error('Error modifying chart:', error);
+      console.error('Error modifying cart:', error);
       return { status: "error", message: error.message };
     }
   }
 
-  async modifyChartItem(userId, updatedFields) {
+  async modifyCartItem(userId, updatedFields) {
     try {
       // Find the cart for this user
-      let chart = await ChartModel.findOne({ createdBy: userId });
+      let cart = await CartModel.findOne({ createdBy: userId });
 
-      if (!chart) {
+      if (!cart) {
         return { status: "unfound", message: "You don't have any item in your cart" };
       }
 
       // Find the index of the item to update
       const existingItemIndex = chart.items.findIndex(
-        (item) => item.chartItemId === updatedFields.chartItemId
+        (item) => item.cartItemId === updatedFields.cartItemId
       );
 
       if (existingItemIndex !== -1) {
         // Update only the matching item
-        chart.items[existingItemIndex] = {
-          ...chart.items[existingItemIndex],
+        cart.items[existingItemIndex] = {
+          ...cart.items[existingItemIndex],
           ...updatedFields
         };
 
-        await chart.save();
+        await cart.save();
 
         return {
           status: "successful",
           message: "Item updated successfully",
-          data: chart.items[existingItemIndex] // Return only the updated item
+          data: cart.items[existingItemIndex] // Return only the updated item
         };
       }
 
       return { status: "not_found", message: "item not found in your cart" };
     } catch (error) {
-      console.error("Error modifying chart:", error);
+      console.error("Error modifying cart:", error);
       return { status: "error", message: error.message };
     }
   }
 
 
 
-  async getChart(userId) {
+  async getCart(userId) {
     try {
-      let charts = await ChartModel.findOne({ createdBy: userId });
-      if (!charts) {
+      let carts = await CartModel.findOne({ createdBy: userId });
+      if (!carts) {
 
         return { status: "empty", message: 'nothing in your chart' };
       }
-      return { status: "successful", message: 'successfully fetched cart', data: charts };
+      return { status: "successful", message: 'successfully fetched cart', data: carts };
     } catch (err) {
-      console.error('Error fetching charts:', err); // Added log message
+      console.error('Error fetching carts:', err); // Added log message
       return { status: "error", message: err.message, error: err.message };; // Return null instead of undefined
     }
   }
 
   async deleteAll(userId) {
-    ChartModel.deleteMany({})
+    CartModel.deleteMany({})
       .then(() => console.log('All documents deleted'))
       .catch((err) => console.error('Error deleting documents:', err));
   }
 }
 
-const chart = new Chart();
-export default chart;
+const cart = new Cart();
+export default cart;

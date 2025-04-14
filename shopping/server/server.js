@@ -7,7 +7,7 @@ import isAdmin from "./middleware/isAdmin.js"
 
 //routes
 import productRouter from './routes/products.js'
-import chartRouter from './routes/chart.js'
+import cartRouter from './routes/cart.js'
 import previlagedroutes from './routes/previlagedActions.js'
 import paystackRouter from './routes/paystack.js'
 
@@ -42,7 +42,7 @@ app.use(paystackRouter)
 
 app.use(productRouter)
 
-app.use(chartRouter)
+app.use(cartRouter)
 
 app.use("/api/admin", isAdmin)
 

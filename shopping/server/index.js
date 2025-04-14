@@ -14,7 +14,7 @@ import isAdmin from "./middleware/isAdmin.js"
 
 //routes
 import productRouter from './routes/products.js'
-import chartRouter from './routes/chart.js'
+import cartRouter from './routes/cart.js'
 import previlagedroutes from './routes/previlagedActions.js'
 import paystackRouter from './routes/paystack.js'
 
@@ -48,7 +48,7 @@ app.prepare().then(async () => {
 
   server.use(productRouter)
 
-  server.use(chartRouter)
+  server.use(cartRouter)
 
   server.use("/api/admin", isAdmin)
 
