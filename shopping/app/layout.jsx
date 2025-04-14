@@ -104,12 +104,19 @@ import '@/public/css-files/Global.css';
 import { initAuthListener } from '@/app/store/authStore';
 import { NotificationsProvider } from '@toolpad/core/useNotifications';
 import Resize from './components/Resize';
+import {
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query'
+import MyModal from './components/Modal';
 
 // Create Theme Context
 const ThemeContext = createContext({
   theme: lightTheme,
   toggleTheme: () => { },
 });
+
+const queryClient = new QueryClient()
 
 // Create a client-side cache, shared for the whole session
 const clientSideEmotionCache = createEmotionCache();
@@ -172,9 +179,15 @@ export default function RootLayout({ children }) {
             {/* <CacheProvider value={clientSideEmotionCache}> */}
             <ThemeProvider theme={theme}>
               <CssBaseline />
+              <QueryClientProvider client={queryClient}>
               <NotificationsProvider autoHideDuration={3000} pauseOnHover={true}>
-                {width >= 450 ? <Resize /> : children}
+                {width >= 450 ? <Resize /> : 
+                <>
+                {children}
+                <MyModal/>
+                </>}
               </NotificationsProvider>
+              </QueryClientProvider>
             </ThemeProvider>
             {/* </CacheProvider> */}
           </ThemeContext.Provider>
