@@ -14,9 +14,11 @@ const axiosClient = async (url, method = 'GET', data = {}, token = null) => {
     const isProduction = process.env.NODE_ENV === 'production';
 
     // Use environment variables if available, otherwise fallback to hardcoded values
-    const baseURL = isProduction
-      ? process.env.NEXT_PUBLIC_API_URL || 'https://apihawk-mart.vercel.app'
-      : process.env.NEXT_PUBLIC_API_URL || 'https://musical-spoon-pxq9qwv9gv5f699j-3000.app.github.dev';
+    // const baseURL = isProduction
+    //   ? process.env.NEXT_PUBLIC_API_URL || 'https://apihawk-mart.vercel.app'
+    //   : process.env.NEXT_PUBLIC_API_URL || 'https://musical-spoon-pxq9qwv9gv5f699j-3000.app.github.dev';
+    
+    const baseURL = 'https://apihawk-mart.vercel.app'
 
     const headers = {
       'Content-Type': 'application/json',

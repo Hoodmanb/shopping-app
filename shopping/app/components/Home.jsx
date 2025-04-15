@@ -383,12 +383,12 @@ export default function Home() {
 
                 className={styles.zoomable}
               >
-                <span
+                {item.discount >= 1 ? (<span
                   className={styles.productdiscount}
                   style={{ backgroundColor: theme.customColors.green }}
                 >
                   -{item.discount}%
-                </span>
+                </span>) : ""}
                 <img
                   src={item.images.length > 0 ? item.images[0] : image8}
                   alt={item.name}

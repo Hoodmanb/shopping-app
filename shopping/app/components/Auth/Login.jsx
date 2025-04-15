@@ -26,6 +26,7 @@ import GoogleIcon from '@mui/icons-material/Google';
 import AppleIcon from '@mui/icons-material/Apple';
 import useUserAuth from '@/app/hooks/userAuth';
 import { useModalStore } from '@/app/store/useModalStore.js';
+import SignUp from './Signup.jsx'
 
 export default function SignIn() {
   const [showPassword, setShowPassword] = useState(false);
@@ -33,7 +34,8 @@ export default function SignIn() {
   const { login } = useUserAuth();
   const theme = useTheme();
   const router = useRouter();
-  const {closeModal} = useModalStore()
+  
+  const {closeModal, openModal} = useModalStore()
 
   const notifications = useNotifications();
 
@@ -66,9 +68,9 @@ export default function SignIn() {
       console.log(res);
       setResponse(res.message);
       if (res.message === 'success') {
-        // showNotification('log in successfully', 'success');
+        showNotification('log in successfully', 'success');
         resetForm();
-        return router.push('/dashboard');
+        return closeModal()
       }
       showNotification(res.message, 'error');
       console.log(res)
@@ -106,34 +108,12 @@ export default function SignIn() {
   };
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'start',
-        backgroundColor: (theme) => theme.customColors.green,
-        borderRadius:"15px"
-      }}
-    >
-      <Box sx={{ height: '20%', width:'100%', textAlign:'right' }}>
-        <IconButton
-          sx={{ marginBottom: '30px', marginTop: '10px', marginRight:"15px"}}
-          onClick={() => closeModal()}
-        >
-          <CloseIcon />
-        </IconButton>
-      </Box>
       <Box
         sx={{
           backgroundColor: 'background.default',
           width: '100%',
-          borderRadius:"15px",
-          borderTopLeftRadius: '20px',
-          borderTopRightRadius: '20px',
-          paddingTop: '15px',
-          // height: "80%",
-          paddingRight: '10px',
-          paddingLeft: '10px',
+          borderRadius:"10px",
+          padding: '10px',
         }}
       >
         <form
@@ -149,6 +129,15 @@ export default function SignIn() {
             marginBottom: '20px',
           }}
         >
+      <Box sx={{ width:'100%', textAlign:'right' }}>
+        <IconButton
+          sx={{ marginBottom: '10px', marginTop: '10px', marginRight:"10px"}}
+          onClick={() => closeModal()}
+        >
+          <CloseIcon />
+        </IconButton>
+      </Box>
+      
           <Typography variant="h5" sx={{ marginBottom: '20px' }}>
             Welcome Back
           </Typography>
@@ -294,15 +283,16 @@ export default function SignIn() {
         </Box>
         <Typography
           variant="body2"
-          sx={{ textAlign: 'center', marginTop: '20px', marginBottom: '20px' }}
+          sx={{ textAlign: 'center', marginTop: '20px', marginBottom: '10px' }}
         >
           Don't Have An Account?
           {' '}
-          <Link sx={{ color: (theme) => theme.customColors.green }} href="/auth/signup">
+          <Button variant="text" sx={{ color: (theme) => theme.customColors.green,
+          textTransform:'none'}}
+          onClick={() => openModal(SignUp)}>
             Sign Up
-          </Link>
+          </Button>
         </Typography>
       </Box>
-    </Box >
   );
 }

@@ -5,14 +5,18 @@ import {
   FormControlLabel, Button, IconButton, InputAdornment, Box, Checkbox, Typography, TextField, Link,
 } from '@mui/material';
 import { Visibility, VisibilityOff, NavigateBefore } from '@mui/icons-material';
+import CloseIcon from '@mui/icons-material/Close';
 import GoogleIcon from '@mui/icons-material/Google';
 import AppleIcon from '@mui/icons-material/Apple';
+
 import { useTheme } from '@mui/material/styles';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { useNotifications } from '@toolpad/core/useNotifications';
 import useUserAuth from '@/app/hooks/userAuth.js';
 import { useRouter } from 'next/navigation';
+import { useModalStore } from '@/app/store/useModalStore';
+import SignIn from './Login';
 
 
 const validationSchema = Yup.object().shape({
@@ -29,6 +33,7 @@ export default function SignUp() {
   const { signup } = useUserAuth();
   const theme = useTheme();
   const router = useRouter()
+  const {closeModal, openModal} = useModalStore()
 
 
   const notifications = useNotifications();
@@ -69,28 +74,13 @@ export default function SignUp() {
   };
 
   return (
-    <Box sx={{
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'start',
-      backgroundColor: (theme) => theme.customColors.green,
-    }}
-    >
-      <IconButton
-        sx={{ marginBottom: '30px', marginTop: '10px', marginLeft: "20px" }}
-        onClick={() => router.back()}
-      >
-        <NavigateBefore />
-      </IconButton>
       <Box sx={{
         backgroundColor: 'background.default',
         width: '100%',
-        borderTopLeftRadius: '20px',
-        borderTopRightRadius: '20px',
-        paddingTop: '15px',
-        paddingBottom: '10px',
-        paddingRight: '10px',
-        paddingLeft: '10px',
+        borderRadius: '10px',
+        padding:'10px',
+        overflow:'scroll',
+        maxHeight:'80vh'
       }}
       >
         <Formik
@@ -101,7 +91,7 @@ export default function SignUp() {
             if (res.message === 'success') {
               showNotification('log in successfully', 'success');
               resetForm();
-              return router.push('/dashboard');
+              return closeModal()
             }
             showNotification(res.message, 'error');
             console.log(res.message)
@@ -119,6 +109,14 @@ export default function SignUp() {
               marginBottom: '20px',
             }}
             >
+      <Box sx={{ width:'100%', textAlign:'right' }}>
+        <IconButton
+          sx={{ marginBottom: '10px', marginRight:"10px"}}
+          onClick={() => closeModal()}
+        >
+          <CloseIcon />
+        </IconButton>
+      </Box>
               <Typography variant="h5" sx={{ marginBottom: '20px' }}>Get Started</Typography>
 
               <TextField
@@ -304,11 +302,14 @@ export default function SignUp() {
             <AppleIcon />
           </IconButton>
         </Box>
-        <Typography variant="body2" sx={{ textAlign: 'center', marginTop: '20px' }}>
+        <Typography variant="body2" sx={{ textAlign: 'center', marginTop: '20px', mb:'10px' }}>
           Already Have An Account?
-          <Link sx={{ color: (theme) => theme.customColors.green }} href="/auth/login">Sign In</Link>
+          <Button 
+          sx={{ color: (theme) => theme.customColors.green,
+          textTransform:'none'}}
+          onClick={() => openModal(SignIn)}
+          >Sign In</Button>
         </Typography>
       </Box>
-    </Box>
   );
 }

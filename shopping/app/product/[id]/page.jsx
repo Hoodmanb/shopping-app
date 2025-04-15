@@ -180,9 +180,18 @@ export default function Product() {
                             Reviews
                         </Button>
                     </Box>
-                    <Typography variant="subtitle2" sx={{ margin: '0 8px', fontWeight: "400" }}>
-                        {product.description}
-                    </Typography>
+<Typography
+  variant="subtitle2"
+  sx={{
+    margin: '0 8px',
+    fontWeight: 400,
+    wordBreak: 'break-word', // This is key
+    overflowWrap: 'break-word',
+    whiteSpace: 'normal' // Make sure text wraps
+  }}
+>
+  {product.description}
+</Typography>
                 </Stack>
 
                 <Box

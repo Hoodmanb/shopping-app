@@ -15,8 +15,8 @@ import useAuthStore from "@/app/store/authStore";
 import axiosClient from '../hooks/axiosClient';
 import { useRouter } from 'next/navigation';
 import useCartStore from '../store/cartStore';
-import Update from '../chart/components/UpdateCartItem'
-import DeleteCartItem from '../chart/components/DeleteCartItem';
+import Update from '../cart/components/UpdateCartItem'
+import DeleteCartItem from '../cart/components/DeleteCartItem';
 import Loading from './Loading';
 import Offline from './Offline';
 export default function Cart() {
