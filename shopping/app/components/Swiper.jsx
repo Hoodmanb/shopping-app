@@ -21,7 +21,7 @@ export default function NavigationPanel() {
   const router = useRouter();
   const pathname = usePathname();
 
-  const routes = ['/dashboard', '/categories', '/chat', '/chart', '/profile'];
+  const routes = ['/dashboard', '/categories', '/chat', '/cart', '/profile'];
   const icons = [HomeIcon, CategoryIcon, ChatBubbleIcon, ShoppingCartIcon, PersonIcon];
   const iconsText = ["Home", "Category", "Chat", "Cart", "You"];
 
