@@ -1,7 +1,13 @@
+import {
+  Box
+} from '@mui/material';
 export default function LandingPage() {
   return (
-    <div>
-      Welcome to the Landing page
-    </div>
+    <Box 
+    component="a"
+    href="/dashboard"
+    >
+      Dashboard
+    </Box>
   );
 }

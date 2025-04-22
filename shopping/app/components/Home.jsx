@@ -55,20 +55,6 @@ export default function Home() {
     'Men Fashion',
   ];
 
-  /*useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axiosClient("/api/products", "GET");
-        if (response.message === "successful" && response.products.length > 0) return setProducts(response.products);
-        if (response.message === "successful" && response.products.length <= 0) return setProducts("empty");
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
-    };
-
-    fetchData();
-  }, []);*/
-
   const { data, isLoading, error } = useQuery({
     queryKey: ['products'],
     queryFn: async () => {

@@ -43,7 +43,7 @@ export const lightTheme = createTheme({
       styleOverrides: {
         root: {
           '&:hover': {
-            backgroundColor: 'rgba(46, 204, 113, 0.1)', // Add a light green background on hover
+            // backgroundColor: 'rgba(46, 204, 113, 0.1)', // Add a light green background on hover
           },
           '&.Mui-focused': {
             //any other focus related changes can be done here.
